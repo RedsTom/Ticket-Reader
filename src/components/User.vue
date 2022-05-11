@@ -1,32 +1,48 @@
 <template>
   <div class="user" v-if="!!user">
-      <div class="img" :style="{'--url': 'url(' + avatarUrl + ')'}" id="avatar" />
-      <div class="text">
-        <h2>{{name}}</h2>
-        <h3>{{id}}</h3>
+    <div class="content">
+      <div class="info">
+        <div class="img" :style="{'--url': 'url(' + avatarUrl + ')'}" id="avatar"/>
+        <div class="text">
+          <h2>{{ name }}</h2>
+          <h3>{{ id }}</h3>
+        </div>
       </div>
-      <Btn text="Supprimer" @click="deleteIt()" class="btn"/>
+      <div class="actions">
+        <Btn text="Supprimer" @click="deleteIt()" class="btn"/>
+      </div>
+    </div>
+
+    <label>
+      <input type="checkbox" id="show-mod" v-model="showAll">
+      Afficher les messages de la modération
+    </label>
   </div>
   <div class="user none" v-else>
     <h2>Aucun utilisateur sélectionné</h2>
     <div class="right">
-        <input
-          type="file"
-          accept="application/JSON"
-          name="select-file"
-          id="select-file"
-          v-show="false"
-          ref="fileInput"
-          @change="changeFile"
-        />
-        <Btn text="Sélectionner le fichier" @click="selectFile()" />
+      <input
+        type="file"
+        accept="application/JSON"
+        name="select-file"
+        id="select-file"
+        v-show="false"
+        ref="fileInput"
+        @change="changeFile"
+      />
+      <Btn text="Sélectionnez un fichier" @click="selectFile()" style="width: 100%"/>
+      <p>ou</p>
+      <form @submit="submitUrl">
+        <input v-model="url" type="url" placeholder="URL du fichier"/>
+        <Btn text="Charger l'url" type="submit"/>
+      </form>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Component, Prop } from 'vue-property-decorator';
+import { Component, Prop, Watch } from 'vue-property-decorator';
 import Btn from './Button.vue';
 
 interface UserModel {
@@ -39,6 +55,17 @@ interface UserModel {
 export default class User extends Vue {
   @Prop({})
   private user!: UserModel;
+
+  private content = '';
+
+  private url = '';
+
+  private showAll = true;
+
+  @Watch('showAll')
+  showAllWatcher() {
+    this.$store.dispatch('updateFilter', this.showAll ? 'ALL' : 'TRANSMITTED');
+  }
 
   get name() {
     return this.user?.name || 'utilisateur';
@@ -55,8 +82,6 @@ export default class User extends Vue {
   deleteIt() {
     this.$store.dispatch('updateTicket', {});
   }
-
-  private content!: string;
 
   selectFile(): void {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -80,18 +105,45 @@ export default class User extends Vue {
 
     reader.readAsText(file);
   }
+
+  submitUrl(e: Event) {
+    e.preventDefault();
+
+    if (this.url.trim().length === 0) {
+      alert('Le champ URL ne peut pas être vide !');
+      return;
+    }
+
+    fetch(`https://cors-anywhere.herokuapp.com/${this.url}`)
+      .then((res) => res.json())
+      .then((json) => this.$store.dispatch('updateTicket', json))
+      .catch(() => alert('Le fichier spécifié n\'existe pas'));
+  }
 }
 </script>
 <style lang="scss" scoped>
-.user {
-  position: sticky;
+.user:not(.none) {
+  padding: 1rem;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+label {
+  user-select: none;
+
+  input[type=checkbox] {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.user, .content {
+  position: fixed;
   top: 0;
-  float: right;
+  right: 0;
   min-width: 20rem;
 
-  padding: 1rem;
-
-  background-color: darken($bg, 5%);
+  background: darken($bg, 5%);
 
   display: flex;
   align-items: center;
@@ -100,8 +152,41 @@ export default class User extends Vue {
 
   &.none {
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    background: transparent;
+
+    height: calc(100vh - 75px);
+
+    .right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      grid-gap: .5rem;
+    }
+
+    form {
+      display: flex;
+      grid-gap: 1rem;
+      max-height: 3rem;
+    }
+  }
+
+  .info {
+    display: flex;
+    grid-gap: 1rem;
+  }
+
+  .actions {
+    display: flex;
     align-items: flex-end;
     justify-content: center;
+    flex-direction: column;
   }
 
   h2 {
@@ -142,8 +227,27 @@ export default class User extends Vue {
     &:hover {
       background-color: darken($red, 5%);
     }
+
     &:active {
       background-color: darken($red, 10%);
+    }
+  }
+
+  form input {
+    padding: 1rem;
+    border-radius: .5rem;
+    border: none;
+    color: white;
+    background: darken($bg, 20%);
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .user {
+    position: relative;
+
+    .content {
+      justify-content: space-between;
     }
   }
 }

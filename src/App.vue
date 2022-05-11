@@ -40,6 +40,15 @@ export default class App extends Vue {
   box-sizing: border-box;
 }
 
+a {
+  color: $cyan !important;
+}
+
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
 #app {
   font-family: 'Poppins', sans-serif;
   background-color: $bg;

@@ -31,8 +31,14 @@ button {
   background-color: $green;
   color: $white;
 
-  padding: .5rem;
+  padding: 1rem;
   border-radius: .25rem;
+
+  height: 2.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     background-color: darken($green, 5%);
