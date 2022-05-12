@@ -22,7 +22,15 @@ import 'normalize.css/normalize.css';
 })
 export default class App extends Vue {
   mounted() {
-    this.$store.dispatch('updateTicket', JSON.parse(localStorage.getItem('ticket') ?? '{}'));
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('input')) {
+      fetch(`https://cors.enimaloc.fr/${params.get('input')}`)
+        .then((res) => res.json())
+        .then((json) => this.$store.dispatch('updateTicket', json))
+        .catch((err) => alert(`Une erreur est survenue lors du chargement du fichier\n${err}`));
+    } else {
+      this.$store.dispatch('updateTicket', JSON.parse(localStorage.getItem('ticket') ?? '{}'));
+    }
   }
 
   get ticket() {
