@@ -114,10 +114,10 @@ export default class User extends Vue {
       return;
     }
 
-    fetch(`https://cors-anywhere.herokuapp.com/${this.url}`)
+    fetch(`https://cors.enimaloc.fr/${this.url}`)
       .then((res) => res.json())
       .then((json) => this.$store.dispatch('updateTicket', json))
-      .catch(() => alert('Le fichier spécifié n\'existe pas'));
+      .catch((err) => alert(`Une erreur est survenue lors du chargement du fichier\n${err}`));
   }
 }
 </script>
