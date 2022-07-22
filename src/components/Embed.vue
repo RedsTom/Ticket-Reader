@@ -1,0 +1,113 @@
+<script lang="ts" setup>
+import { marked } from 'marked'
+import name from 'emoji-name-map'
+import moment from 'moment'
+import { sanitize } from 'dompurify'
+
+interface Field {
+  name: string;
+  value: string;
+  inline?: boolean;
+}
+interface Embed {
+  title?: string;
+  description?: string;
+  color?: number;
+  fields?: Field[];
+  timestamp?: string;
+}
+interface Props {
+  embed: Embed
+}
+// eslint-disable-next-line no-undef
+const p = defineProps<Props>()
+
+const lines: Field[][] = []
+
+for (const field of (p.embed.fields || []) as Field[]) {
+  if (!field.inline || lines.length === 0) {
+    lines.push([])
+  }
+  lines[lines.length - 1].push(field)
+}
+
+function toColor (num: number): string {
+  num >>>= 0
+  const b = num & 0xFF
+  const g = (num & 0xFF00) >>> 8
+  const r = (num & 0xFF0000) >>> 16
+  return 'rgba(' + [r, g, b, 255].join(',') + ')'
+}
+
+console.log(p.embed.color)
+const color = toColor(p.embed.color || 0xFFFFFF)
+</script>
+
+<template>
+  <div class="embed">
+    <div class="title" v-if="p.embed.title" v-html="sanitize(marked(p.embed.title))">
+    </div>
+    <div class="description" v-if="p.embed.description" v-html="sanitize(marked(p.embed.description))">
+    </div>
+    <div class="fields" v-if="lines.length != 0">
+      <div class="line" v-for="line in lines" :key="JSON.stringify(line)">
+        <div class="field" v-for="field in line" :key="JSON.stringify(field)">
+          <div class="name" v-html="sanitize(marked(field.name))"></div>
+          <div class="value" v-html="sanitize(marked(field.value))"></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer" v-if="p.embed.timestamp">
+      {{ moment(p.embed.timestamp).format('[Le] dddd DD MMMM YYYY [à] HH[:]mm[:]ss') }}
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@use '@/styles/colors';
+
+.embed {
+  max-width: 40rem;
+  width: fit-content;
+
+  font-size: .8rem;
+
+  display: flex;
+  flex-direction: column;
+  grid-gap: .5rem;
+  padding: .75rem;
+
+  border-radius: .5rem;
+
+  background-color: colors.$quite-black;
+
+  border-left: 3px v-bind(color) solid;
+
+  .title {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .description {}
+
+  .fields {
+    display: flex;
+    flex-direction: column;
+
+    .line {
+      display: flex;
+      flex-wrap: wrap;
+      grid-gap: .25rem;
+
+      .field {
+        flex: 1 0 30%;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+
+  .footer {
+  }
+}
+</style>
