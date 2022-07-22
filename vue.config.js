@@ -6,5 +6,6 @@ module.exports = defineConfig({
       'redstom.freeboxos.fr:8080',
       'redstom.freeboxos.fr'
     ]
-  }
+  },
+  publicPath: '/GravenDev-TicketReader/'
 })

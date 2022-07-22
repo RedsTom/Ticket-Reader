@@ -1,30 +1,18 @@
 <script lang="ts" setup>
-import { marked } from 'marked'
-import name from 'emoji-name-map'
-import moment from 'moment'
+import { EmbedModel, FieldModel } from '@/models/report'
 import { sanitize } from 'dompurify'
+import { marked } from 'marked'
+import moment from 'moment'
 
-interface Field {
-  name: string;
-  value: string;
-  inline?: boolean;
-}
-interface Embed {
-  title?: string;
-  description?: string;
-  color?: number;
-  fields?: Field[];
-  timestamp?: string;
-}
 interface Props {
-  embed: Embed
+  embed: EmbedModel
 }
 // eslint-disable-next-line no-undef
 const p = defineProps<Props>()
 
-const lines: Field[][] = []
+const lines: FieldModel[][] = []
 
-for (const field of (p.embed.fields || []) as Field[]) {
+for (const field of (p.embed.fields || []) as FieldModel[]) {
   if (!field.inline || lines.length === 0) {
     lines.push([])
   }
@@ -67,7 +55,7 @@ const color = toColor(p.embed.color || 0xFFFFFF)
 @use '@/styles/colors';
 
 .embed {
-  max-width: 40rem;
+  max-width: 50rem;
   width: fit-content;
 
   font-size: .8rem;
@@ -102,6 +90,7 @@ const color = toColor(p.embed.color || 0xFFFFFF)
       .field {
         flex: 1 0 30%;
         display: flex;
+        grid-gap: .25rem;
         flex-direction: column;
       }
     }

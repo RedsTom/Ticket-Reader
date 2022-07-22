@@ -4,31 +4,10 @@ import Embed from './Embed.vue'
 import moment from 'moment'
 import { marked } from 'marked'
 import { sanitize } from 'dompurify'
+import { MessageModel } from '@/models/report'
 
 interface Props {
-    message: {
-        author: {
-            id: string;
-            name: string;
-            avatarUrl: string;
-        },
-        creationTimestamp: number;
-        content: string;
-        attachementUrls: string[];
-        edited: boolean;
-        messageType: 'MODERATION' | 'TARGET';
-        embeds: {
-            title?: string;
-            description?: string;
-            color?: number;
-            fields?: {
-                name: string;
-                value: string;
-                inline?: boolean;
-            }[];
-            timestamp?: string;
-        }[]
-    },
+    message: MessageModel,
     colorClass: string;
 }
 

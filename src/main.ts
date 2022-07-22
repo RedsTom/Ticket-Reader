@@ -9,12 +9,26 @@ import './registerServiceWorker'
 import store from './store'
 import Toaster from '@meforma/vue-toaster'
 import moment from 'moment'
+import router from './router'
 
 moment.locale('fr')
 library.add(fas, fab, far)
 
-createApp(App)
+createApp(App).use(router)
   .use(store)
   .use(Toaster)
   .component('fai', FontAwesomeIcon)
+  .directive('click-outside', {
+    beforeMount: (el, binding) => {
+      el.clickOutsideEvent = (event: Event) => {
+        if (!(el === event.target || el.contains(event.target))) {
+          binding.value()
+        }
+      }
+      document.addEventListener('click', el.clickOutsideEvent)
+    },
+    unmounted: el => {
+      document.removeEventListener('click', el.clickOutsideEvent)
+    }
+  })
   .mount('#app')

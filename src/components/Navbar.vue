@@ -3,13 +3,10 @@
 import { ref } from '@vue/reactivity'
 import { createToaster } from '@meforma/vue-toaster'
 import Avatar from './Avatar.vue'
+import { UserModel } from '@/models/report'
 
 interface Props {
-  user: {
-    name: string;
-    id: string;
-    avatarUrl: string;
-  }
+  user: UserModel
 }
 
 // eslint-disable-next-line no-undef
@@ -45,7 +42,7 @@ function copy (toCopy: string) {
   toast.show('Texte copié !')
 }
 
-const emit = defineEmits(['hide-staff', 'show-staff'])
+const emit = defineEmits(['hide-staff', 'show-staff', 'cancel-user'])
 
 function toggleMod () {
   if (modMessages.value) {
@@ -63,7 +60,7 @@ function toggleMod () {
   <nav id="navbar">
     <h1>Lecteur de tickets</h1>
 
-    <div class="user">
+    <div class="user" v-click-outside="popupShow = false">
       <Avatar class="left" :url="p.user.avatarUrl" @click="popupShow = !popupShow" />
       <div class="right" @click="popupShow = !popupShow">
         <div class="username">{{ p.user.name }}</div>
@@ -85,11 +82,7 @@ function toggleMod () {
             <fai icon="fas fa-eye" />
             {{ modMessages ? 'Cacher' : 'Afficher' }} les messages de la modération
           </button>
-          <button class="item yellow">
-            <fai icon="fas fa-star" />
-            Marquer comme favori
-          </button>
-          <button class="item red">
+          <button class="item red" @click="$emit('cancel-user')">
             <fai icon="fas fa-trash-alt" />
             Supprimer
           </button>
