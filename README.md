@@ -26,7 +26,7 @@ Most of the contributors are part of the staff but the members are also allowed 
 |------------------------|-------------|
 | Current State          | 🟩 In production     |
 | Accessible on | https://redstom.github.io/GravenDev-TicketReader/ |
-| Issues | ![](https://img.shields.io/github/issues/GravenDev/GravenSupport?style=for-the-badge) |
-| Pull Requests | ![](https://img.shields.io/github/issues-pr/GravenDev/GravenSupport?style=for-the-badge) |
+| Issues | ![](https://img.shields.io/github/issues/GravenDev/Ticket-Reader?style=for-the-badge) |
+| Pull Requests | ![](https://img.shields.io/github/issues-pr/GravenDev/Ticket-Reader?style=for-the-badge) |
 
 --- 
