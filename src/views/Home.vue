@@ -164,6 +164,7 @@ const update = async () => {
       background-color: colors.$blue;
       border: none;
       outline: none;
+      cursor: pointer;
 
       padding: .5rem 1rem;
       border-radius: .5rem;
