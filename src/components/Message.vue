@@ -35,7 +35,7 @@ const p = defineProps<Props>()
                         class="attachement"
                         v-for="att in Object.entries(p.message.attachementUrls)"
                         :key="JSON.stringify(att[1])"
-                        :href="att[1]" target="_blank" :style="`--bg: url(${att[1]})`">
+                        :href="att[1]" :style="`--bg: url(${att[1]})`">
                         <p>Pièce jointe #{{ att[0] }}</p>
                     </a>
                 </div>
