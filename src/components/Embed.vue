@@ -46,7 +46,10 @@ const color = toColor(p.embed.color || 0xFFFFFF)
       </div>
     </div>
     <div class="footer" v-if="p.embed.timestamp">
-      {{ moment(p.embed.timestamp).format('[Le] dddd DD MMMM YYYY [à] HH[:]mm[:]ss') }}
+      <img class="footer-image" :src="embed.footer.icon_url" alt="Image" v-if="embed.footer.icon_url">
+      <span>{{ embed.footer.text }}</span>
+      |
+      <span>{{ moment(p.embed.timestamp).format('[Le] dddd DD MMMM YYYY [à] HH[:]mm[:]ss') }}</span>
     </div>
   </div>
 </template>
@@ -97,6 +100,16 @@ const color = toColor(p.embed.color || 0xFFFFFF)
   }
 
   .footer {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+
+    .footer-image {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      margin-right: .25rem;
+    }
   }
 }
 </style>

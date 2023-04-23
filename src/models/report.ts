@@ -9,6 +9,10 @@ export interface EmbedModel {
   color?: number;
   fields?: FieldModel[];
   timestamp?: string;
+  footer: {
+    text: string;
+    icon_url: string;
+  }
 }
 export interface UserModel {
   name: string;
