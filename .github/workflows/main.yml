@@ -1,0 +1,25 @@
+name: CI
+on:
+  push:
+    branches: 
+     - master
+  pull_request:
+    branches:
+     - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v2
+     - uses: actions/setup-node@v1
+       with:
+        node-version: '16.x'
+     - run: npm install
+     - run: npm run build
+     - name: Deploy
+       uses: JamesIves/github-pages-deploy-action@releases/v3
+       with:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }} # The access token to the github organization or one of its member
+        BRANCH: deployment
+        FOLDER: dist
