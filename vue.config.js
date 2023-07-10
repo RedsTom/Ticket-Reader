@@ -7,5 +7,5 @@ module.exports = defineConfig({
       'redstom.freeboxos.fr'
     ]
   },
-  publicPath: '/'
+  publicPath: '/Ticket-Reader'
 })
