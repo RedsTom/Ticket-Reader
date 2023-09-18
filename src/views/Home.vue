@@ -1,46 +1,39 @@
 <script lang="ts" setup>
 import '@/styles/index.scss'
-import Navbar from '@/components/Navbar.vue'
-import Message from '@/components/Message.vue'
-import { MessageModel, ReportModel } from '@/models/report'
-import { useRoute, useRouter } from 'vue-router'
-import {computed, onMounted, Ref, ref} from "vue";
+import {ReportModel} from '@/models/report'
+import {useRoute, useRouter} from 'vue-router'
+import {onMounted, Ref, ref} from "vue";
+import parse, {Parser} from "@/utils/parser";
 
 const fetching = ref(true)
-const file: Ref<ReportModel | undefined> = ref(undefined)
+const parser: Ref<Parser<any> | undefined> = ref();
+const report: Ref<ReportModel> = ref(undefined)
 const error = ref(undefined)
 
-const showStaff = ref(true)
-const router = useRouter()
 const route = useRoute()
+const router = useRouter()
 
 const load = () => {
-  console.log(route.query)
   if (route.query.input) {
     fetch(`https://cors.enimaloc.fr/${route.query.input}`)
       .then(res => res.json())
-      .then(data => { file.value = data; fetching.value = false })
-      .catch(err => { error.value = err; fetching.value = false })
+      .then(data => {
+        const parseResult = parse(data);
+        parser.value = parseResult.parser;
+        report.value = parseResult.data;
+
+        fetching.value = false
+      })
+      .catch(err => {
+        error.value = err;
+        fetching.value = false
+      })
   } else {
     fetching.value = false
   }
 }
 
-const messages: MessageModel[] = computed(() => showStaff.value ? (file.value?.messages ?? []) : (file.value?.messages ?? []).filter(a => getColorClass(a) !== 'red'))
 
-const getColorClass: (msg: { messageType: string, author: { id: string }, content: string }) => string = (msg) => {
-  let colorClass = msg.messageType === 'MODERATION' ? 'red' : 'green'
-  // eslint-disable-next-line eqeqeq
-  if (msg.content.startsWith('\'') || msg.author.id == '804866779519516700') {
-    colorClass = 'blue'
-  }
-  return colorClass
-}
-
-const cancel = () => {
-  router.replace('/')
-  file.value = undefined
-}
 
 onMounted(() => load())
 
@@ -50,42 +43,29 @@ const update = async () => {
     return
   }
 
-  await router.replace({ path: '/', query: { input: reportLink.value } })
+  await router.replace({path: '/', query: {input: reportLink.value}})
   load()
 }
 </script>
 
 <template>
   <transition name="fade" mode="out-in">
-  <div class="loader" v-if="fetching">
-    <div class="loader-circle">
+    <div class="loader" v-if="fetching">
+      <div class="loader-circle">
+      </div>
     </div>
-  </div>
-  <div class="ok" v-else-if="!fetching && !!file">
-    <Navbar
-      :user="file.to"
-      @show-staff="showStaff = true"
-      @hide-staff="showStaff = false"
-      @cancel-user="cancel"
-    />
-    <div class="messages">
-      <Message
-        v-for="message in messages"
-        :key="JSON.stringify(message)"
-        :message="message"
-        :color-class="getColorClass(message)"
-      />
+    <div class="ok" v-else-if="!fetching && !!report">
+      <component :is="parser?.comps.messageList" :report="report" :parser="parser" />
     </div>
-  </div>
-  <div class="no-fetched" v-else>
-    <div class="content">
-      <h1>Aucun fichier selectionné !</h1>
-      <form @submit.prevent="update">
-      <input placeholder="Lien du rapport" v-model="reportLink" />
-      <button type="submit">Valider</button>
-      </form>
+    <div class="no-fetched" v-else>
+      <div class="content">
+        <h1>Aucun fichier selectionné !</h1>
+        <form @submit.prevent="update">
+          <input placeholder="Lien du rapport" v-model="reportLink"/>
+          <button type="submit">Valider</button>
+        </form>
+      </div>
     </div>
-  </div>
   </transition>
 </template>
 

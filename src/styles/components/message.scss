@@ -1,0 +1,85 @@
+@use '@/styles/colors';
+
+.message {
+  padding: .75rem;
+
+  display: flex;
+  grid-gap: 1rem;
+
+  &:hover {
+    background: transparentize($color: colors.$quite-black, $amount: .5);
+  }
+
+  border-left: .2rem solid;
+
+  &.red {
+    border-left-color: colors.$red;
+  }
+
+  &.blue {
+    border-left-color: colors.$blue;
+  }
+
+  &.green {
+    border-left-color: colors.$green;
+  }
+
+  .user {
+    display: flex;
+    align-items: flex-end;
+    grid-gap: 1rem;
+
+    padding-bottom: 1rem;
+
+    .username:hover {
+      text-decoration: underline;
+    }
+
+    .id, .date {
+      font-size: .75rem;
+    }
+  }
+
+  .embeds {
+    display: flex;
+    flex-direction: column;
+    grid-gap: .5rem;
+  }
+
+  .attachments {
+    display: flex;
+    padding: .5rem 0;
+    grid-gap: 1rem;
+
+    .attachment {
+      height: 8rem;
+      width: 15rem;
+      background-color: colors.$quite-black;
+      border-radius: .5rem;
+      color: white;
+
+      transition: .2s;
+
+      background-image: var(--bg);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      p {
+        opacity: .2;
+        background-color: colors.$quite-black;
+        padding: .5rem 2rem;
+
+        transition: .2s;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,140 @@
+@use '@/styles/colors';
+
+#navbar {
+  position: sticky;
+  top: 0;
+
+  width: 100%;
+  height: 4rem;
+
+  padding: 0 0 0 2rem;
+
+  background-color: colors.$quite-black;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 1rem;
+
+  width: fit-content;
+  height: 100%;
+
+  padding: 1rem;
+
+  transition: .2s;
+
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background-color: lighten(colors.$quite-black, 5%);
+  }
+
+  &:active {
+    background-color: lighten(colors.$quite-black, 10%);
+  }
+
+  .right {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: flex-start;
+
+    .username {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .id {
+      font-size: .75rem;
+      color: darken(colors.$white, 25%);
+    }
+  }
+
+  svg {
+    padding-left: 1rem;
+  }
+}
+
+.popup {
+  position: absolute;
+  right: 0;
+  top: 4rem;
+
+  width: 100%;
+
+  background-color: colors.$quite-black;
+
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 0 0 0 .5rem;
+  overflow: hidden;
+
+  .item {
+    display: flex;
+    align-items: center;
+    grid-gap: 1rem;
+
+    background-color: colors.$quite-black;
+    color: colors.$white;
+
+    font-weight: 600;
+    font-size: 1rem;
+
+    outline: none;
+    border: none;
+
+    padding: .75rem 2rem;
+    transition: .2s;
+
+    text-align: left;
+
+    &:hover {
+      background-color: lighten(colors.$quite-black, 5%);
+    }
+
+    &:active {
+      background-color: lighten(colors.$quite-black, 10%);
+    }
+
+    @mixin colorize($color) {
+      svg {
+        transition: .2s;
+        color: $color;
+      }
+    }
+
+    &.red {
+      @include colorize(colors.$red);
+    }
+
+    &.green {
+      @include colorize(colors.$green);
+    }
+
+    &.yellow {
+      @include colorize(colors.$yellow);
+    }
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  pointer-events: none;
+}

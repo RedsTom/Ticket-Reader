@@ -1,49 +1,9 @@
-export interface FieldModel {
-  name: string;
-  value: string;
-  inline?: boolean;
-}
-export interface EmbedModel {
-  title?: string;
-  description?: string;
-  color?: number;
-  fields?: FieldModel[];
-  timestamp?: string;
-  footer: {
-    text: string;
-    icon_url: string;
-  }
-}
-export interface UserModel {
-  name: string;
-  id: string;
-  avatarUrl: string;
-}
-export interface MessageModel {
-  author: {
-    id: string;
-    name: string;
-    avatarUrl: string;
-  };
-  creationTimestamp: number;
-  content: string;
-  attachementUrls: string[];
-  edited: boolean;
-  messageType: 'MODERATION' | 'TARGET';
-  embeds: {
-    title?: string;
-    description?: string;
-    color?: number;
-    fields?: {
-      name: string;
-      value: string;
-      inline?: boolean;
-    }[];
-    timestamp?: string;
-  }[];
-}
+export interface FieldModel {}
+export interface EmbedModel {}
+export interface UserModel {}
+export interface MessageModel {}
 export interface ReportModel {
-    version: number;
-    to: UserModel;
-    messages: MessageModel[];
+  version: number;
 }
+
+export type UserType = 'MODERATION' | 'TARGET' | 'BOT';
