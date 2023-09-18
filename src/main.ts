@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { createApp } from 'vue'
 import App from './App.vue'
 import './registerServiceWorker'
-import Toaster from '@meforma/vue-toaster'
 import moment from 'moment'
 import router from './router'
 
@@ -14,7 +13,6 @@ moment.locale('fr')
 library.add(fas, fab, far)
 
 createApp(App).use(router)
-  .use(Toaster)
   .component('fai', FontAwesomeIcon)
   .directive('click-outside', {
     beforeMount: (el, binding) => {
