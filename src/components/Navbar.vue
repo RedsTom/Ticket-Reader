@@ -1,6 +1,6 @@
 <!-- eslint-disable no-undef -->
 <script lang="ts" setup>
-import { ref } from '@vue/reactivity'
+import { ref } from 'vue'
 import { createToaster } from '@meforma/vue-toaster'
 import Avatar from './Avatar.vue'
 import { UserModel } from '@/models/report'
@@ -60,7 +60,7 @@ function toggleMod () {
   <nav id="navbar">
     <h1>Lecteur de tickets</h1>
 
-    <div class="user" v-click-outside="popupShow = false">
+    <div class="user" v-click-outside="() => popupShow = false">
       <Avatar class="left" :url="p.user.avatarUrl" @click="popupShow = !popupShow" />
       <div class="right" @click="popupShow = !popupShow">
         <div class="username">{{ p.user.name }}</div>

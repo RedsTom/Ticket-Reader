@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ref } from '@vue/reactivity'
-
 // eslint-disable-next-line no-undef
+import {ref} from "vue";
+
 const p = defineProps<{url: string}>()
 
 const avatarBackground = ref(`url(${p.url})`)

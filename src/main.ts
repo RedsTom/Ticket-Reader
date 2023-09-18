@@ -22,7 +22,9 @@ createApp(App).use(router)
     beforeMount: (el, binding) => {
       el.clickOutsideEvent = (event: Event) => {
         if (!(el === event.target || el.contains(event.target))) {
-          binding.value()
+          if(typeof binding.value === 'function') {
+            binding.value()
+          }
         }
       }
       document.addEventListener('click', el.clickOutsideEvent)

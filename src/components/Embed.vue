@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { EmbedModel, FieldModel } from '@/models/report'
-import { sanitize } from 'dompurify'
+import * as sanitize from 'sanitize-html'
 import { marked } from 'marked'
 import moment from 'moment'
 
@@ -46,8 +46,8 @@ const color = toColor(p.embed.color || 0xFFFFFF)
       </div>
     </div>
     <div class="footer" v-if="p.embed.timestamp">
-      <img class="footer-image" :src="embed.footer.icon_url" alt="Image" v-if="embed.footer.icon_url">
-      <span>{{ embed.footer.text }}</span>
+      <img class="footer-image" :src="embed.footer.icon_url" alt="Image" v-if="embed.footer?.icon_url">
+      <span>{{ embed.footer?.text }}</span>
       |
       <span>{{ moment(p.embed.timestamp).format('[Le] dddd DD MMMM YYYY [à] HH[:]mm[:]ss') }}</span>
     </div>
@@ -78,8 +78,6 @@ const color = toColor(p.embed.color || 0xFFFFFF)
     font-size: 1rem;
     font-weight: bold;
   }
-
-  .description {}
 
   .fields {
     display: flex;

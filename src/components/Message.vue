@@ -3,8 +3,8 @@ import Avatar from './Avatar.vue'
 import Embed from './Embed.vue'
 import moment from 'moment'
 import { marked } from 'marked'
-import { sanitize } from 'dompurify'
 import { MessageModel } from '@/models/report'
+import * as sanitize from 'sanitize-html'
 
 interface Props {
     message: MessageModel,
@@ -30,9 +30,9 @@ const p = defineProps<Props>()
                 <div class="embeds">
                     <Embed v-for="embed in p.message.embeds" :key="JSON.stringify(embed)" :embed="embed"/>
                 </div>
-                <div class="attachements" v-if="p.message.attachementUrls.length > 0">
+                <div class="attachments" v-if="p.message.attachementUrls.length > 0">
                     <a
-                        class="attachement"
+                        class="attachment"
                         v-for="att in Object.entries(p.message.attachementUrls)"
                         :key="JSON.stringify(att[1])"
                         :href="att[1]" :style="`--bg: url(${att[1]})`">
@@ -91,12 +91,12 @@ const p = defineProps<Props>()
         grid-gap: .5rem;
     }
 
-    .attachements {
+    .attachments {
         display: flex;
         padding: .5rem 0;
         grid-gap: 1rem;
 
-        .attachement {
+        .attachment {
             height: 8rem;
             width: 15rem;
             background-color: colors.$quite-black;

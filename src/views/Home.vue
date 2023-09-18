@@ -2,10 +2,9 @@
 import '@/styles/index.scss'
 import Navbar from '@/components/Navbar.vue'
 import Message from '@/components/Message.vue'
-import { Ref, ref } from '@vue/reactivity'
-import { computed, onMounted } from '@vue/runtime-core'
 import { MessageModel, ReportModel } from '@/models/report'
 import { useRoute, useRouter } from 'vue-router'
+import {computed, onMounted, Ref, ref} from "vue";
 
 const fetching = ref(true)
 const file: Ref<ReportModel | undefined> = ref(undefined)
