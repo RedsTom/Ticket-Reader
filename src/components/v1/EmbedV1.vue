@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import * as sanitize from 'sanitize-html'
+import sanitize from 'sanitize-html'
 import {marked} from 'marked'
 import moment from 'moment'
 import {EmbedModelV1, FieldModelV1} from "@/models/report.v1";

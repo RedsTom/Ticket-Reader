@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import moment from 'moment'
 import {marked} from 'marked'
-import * as sanitize from 'sanitize-html'
+import sanitize from 'sanitize-html'
 import {Parser} from "@/utils/parser";
 import {MessageModelV2} from "@/models/report.v2";
 
