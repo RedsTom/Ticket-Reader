@@ -15,10 +15,10 @@ const router = useRouter()
 
 const load = () => {
   if (route.query.input) {
-    fetch(`https://cors.enimaloc.fr/${route.query.input}`)
+    fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(route.query.input)}`)
       .then(res => res.json())
       .then(data => {
-        const parseResult = parse(data);
+        const parseResult = parse(JSON.parse(data.contents));
         parser.value = parseResult.parser;
         report.value = parseResult.data;
 
