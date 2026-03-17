@@ -15,7 +15,7 @@ const router = useRouter()
 
 const load = () => {
   if (route.query.input) {
-    fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(route.query.input)}`)
+    fetch(`https://corsproxy.io/?url=${encodeURIComponent(route.query.input)}`)
       .then(res => res.json())
       .then(data => {
         const parseResult = parse(JSON.parse(data.contents));
